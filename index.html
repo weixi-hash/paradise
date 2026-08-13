@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Paradise 帕罗戴斯</title>
     <style>
 * {
@@ -31,10 +31,10 @@ body {
     text-align: center;
 }
 .top-banner .title {
-    font-size: 44px;
-    letter-spacing: 10px;
-    position: relative;
-    display: inline-block;
+  font-size: clamp(2rem, 12vw, 44px);
+  letter-spacing: clamp(4px, 3vw, 10px);
+  position: relative;
+  display: inline-block;
 }
 .top-banner .title span.en{
     font-family:"Segoe Script",cursive;
@@ -67,14 +67,14 @@ body {
     100% {transform: translate(0,0) scale(1.2);}
 }
 .wisteria-deco{
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    width: 420px;
-    opacity: 0.18;
-    z-index: 0;
-    pointer-events: none;
-    object-fit: contain;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  width: min(420px, 60vw); /* 最大420px，手机最多占屏幕60%宽度 */
+  opacity: 0.18;
+  z-index: 0;
+  pointer-events: none;
+  object-fit: contain;
 }
 .home-card-wrap{
     display:flex;
@@ -83,18 +83,20 @@ body {
     z-index:1;
 }
 .home-card{
-    width:280px;
-    height:360px;
-    background:#ffffff;
-    border-radius:16px;
-    box-shadow: 0 4px 16px rgba(70, 80, 130, 0.12);
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    cursor:pointer;
-    transition: 0.3s ease;
-    border:1px solid rgba(140,148,190,0.15);
+  width: min(280px, 85vw); /* 电脑最大280px，手机占屏幕85%宽度 */
+  height: auto; /* 高度自动随内容，不再写死360px */
+  aspect-ratio: 280 / 360; /* 保持原卡片宽高比例不变 */
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(70, 80, 130, 0.12);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.3s ease;
+  border: 1px solid rgba(140,148,190,0.15);
+  box-sizing: border-box;
 }
 .home-card:hover{
     transform: translateY(-8px);
@@ -112,7 +114,8 @@ body {
     display:none;
     min-height:100vh;
     background: linear-gradient(135deg, #e8eaf6 0%, #f0edf7 100%);
-    padding:30px;
+    padding: clamp(12px,4vw,30px); /* 手机最小12px，电脑最大30px自适应 */
+  box-sizing: border-box;
 }
 .page-title{
     text-align:center;
@@ -179,11 +182,12 @@ body {
 }
 .right-panel{
     flex:1;
-    background:#fff;
-    border-radius:14px;
-    padding:28px;
-    min-height:520px;
-    box-shadow:0 4px 14px rgba(70,80,130,0.10);
+  background:#fff;
+  border-radius:14px;
+  padding: clamp(16px,5vw,28px); /* 自适应内边距 */
+  min-height: min(520px, 120vh); /* 手机限制最大高度 */
+  box-shadow:0 4px 14px rgba(70,80,130,0.10);
+  box-sizing: border-box;
 }
 .tip-text{
     color:#9498b2;
@@ -238,21 +242,37 @@ body {
     justify-content:center;
 }
 .resident-detail-box{
-    background:#fff;
-    width:500px;
-    padding:30px;
-    border-radius:14px;
+     background:#fff;
+  width: min(500px, 90vw); /* 电脑最大500px，手机占90%屏幕宽 */
+  padding: clamp(20px,5vw,30px);
+  border-radius:14px;
+  box-sizing: border-box;
 }
 .resident-detail-box img{
-    width:160px;
-    height:160px;
-    border-radius:50%;
-    margin-bottom:20px;
+     width: min(160px, 40vw);
+  height: min(160px, 40vw);
+  border-radius:50%;
+  margin-bottom:20px;
+  object-fit:cover;
 }
 .resident-close{
     margin-top:20px;
     padding:8px 16px;
     cursor:pointer;
+}
+@media (max-width: 768px) {
+  .home-card-wrap {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  .split-layout {
+    flex-direction: column;
+  }
+  .left-panel {
+    width: 100%;
+  }
+}
 }
 </style>
 </head>
