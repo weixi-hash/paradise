@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paradise 帕罗戴斯</title>
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    background: linear-gradient(135deg, #e8eaf6 0%, #f0edf7 100%);
+    font-family: "Microsoft Yahei", sans-serif;
+}
+/* ========== 首页容器 ========== */
+.home-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 60px;
+    gap: 60px;
+    position: relative;
+    overflow: hidden;
+}
+.top-banner {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+}
+.top-banner .title {
+    font-size: 44px;
+    letter-spacing: 10px;
+    position: relative;
+    display: inline-block;
+}
+.top-banner .title span.en{
+    font-family:"Segoe Script",cursive;
+    color:#383e66;
+}
+.top-banner .title span.cn{
+    font-family:"Microsoft Yahei",sans-serif;
+    color:#2b3358;
+}
+.top-banner .title::before,
+.top-banner .title::after {
+    content: "";
+    position: absolute;
+    width: 140%;
+    height:140%;
+    left:-20%;
+    top:-20%;
+    background: radial-gradient(circle, rgba(255,255,255,0.7) 0%, rgba(200, 190, 240,0.6) 45%, transparent 72%);
+    filter: blur(12px);
+    opacity:0.85;
+    z-index:-1;
+}
+.top-banner .title::after {
+    background: radial-gradient(circle, rgba(255,255,255,0.65) 0%, rgba(175,200,245,0.35) 45%, transparent 72%);
+    animation: floatLight 3.5s ease-in-out infinite;
+}
+@keyframes floatLight {
+    0% {transform: translate(0,0) scale(1);}
+    50% {transform: translate(20px,-20px) scale(1.12);}
+    100% {transform: translate(0,0) scale(1.2);}
+}
+.wisteria-deco{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 420px;
+    opacity: 0.18;
+    z-index: 0;
+    pointer-events: none;
+    object-fit: contain;
+}
+.home-card-wrap{
+    display:flex;
+    gap:40px;
+    position:relative;
+    z-index:1;
+}
+.home-card{
+    width:280px;
+    height:360px;
+    background:#ffffff;
+    border-radius:16px;
+    box-shadow: 0 4px 16px rgba(70, 80, 130, 0.12);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+    transition: 0.3s ease;
+    border:1px solid rgba(140,148,190,0.15);
+}
+.home-card:hover{
+    transform: translateY(-8px);
+    box-shadow:0 12px 28px rgba(70, 80, 130, 0.18);
+}
+.home-card h2{
+    margin-bottom:12px;
+    color:#2b3358;
+}
+.home-card p{
+    color:#747894;
+}
+/* ==========页面通用样式 ========== */
+.staff-page, .god-page, #residentPage{
+    display:none;
+    min-height:100vh;
+    background: linear-gradient(135deg, #e8eaf6 0%, #f0edf7 100%);
+    padding:30px;
+}
+.page-title{
+    text-align:center;
+    margin-bottom:30px;
+    color:#2b3358;
+    letter-spacing:2px;
+}
+.back-btn{
+    margin-bottom:20px;
+    padding:8px 18px;
+    cursor:pointer;
+    border-radius:6px;
+    border:1px solid #b0b8d8;
+    background:#fff;
+    transition:0.2s;
+}
+.back-btn:hover{
+    background:#e2e6f5;
+}
+.split-layout{
+    display:flex;
+    gap:24px;
+    max-width:1200px;
+    margin:0 auto;
+}
+.left-panel{
+    width:280px;
+}
+.mini-card{
+    background:#fff;
+    padding:14px;
+    border-radius:12px;
+    margin-bottom:14px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    border:2px solid transparent;
+    box-shadow: 0 2px 8px rgba(80,90,140,0.08);
+    transition:0.25s;
+}
+.mini-card:hover{
+    transform:translateX(4px);
+    box-shadow:0 4px 12px rgba(80,90,140,0.12);
+}
+.mini-card.active{
+    border-color:#707fc9;
+    background:#f3f5fc;
+}
+.mini-card img{
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    object-fit:cover;
+}
+.mini-info .name{
+    font-weight:bold;
+    font-size:16px;
+    color:#2b3358;
+}
+.mini-info .post{
+    font-size:13px;
+    color:#747894;
+}
+.right-panel{
+    flex:1;
+    background:#fff;
+    border-radius:14px;
+    padding:28px;
+    min-height:520px;
+    box-shadow:0 4px 14px rgba(70,80,130,0.10);
+}
+.tip-text{
+    color:#9498b2;
+    text-align:center;
+    margin-top:140px;
+    font-size:16px;
+}
+.detail-avatar{
+    width:140px;
+    height:140px;
+    border-radius:50%;
+    object-fit:cover;
+    margin-bottom:16px;
+}
+/* 居民双列网格卡片样式 */
+.resident-card{
+    background:#fff;
+    padding:16px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    box-shadow:0 2px 8px rgba(80,90,140,0.08);
+    cursor:pointer;
+    transition:0.25s;
+}
+.resident-card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 4px 12px rgba(80,90,140,0.12);
+}
+.resident-card img{
+    width:72px;
+    height:72px;
+    border-radius:50%;
+    object-fit:cover;
+    border:1px solid #ddd;
+}
+.resident-name-line{
+    flex:1;
+    border-bottom:1px solid #333;
+    font-size:18px;
+    padding-bottom:4px;
+}
+/* 居民详情弹窗 */
+.resident-detail-modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.4);
+    z-index:998;
+    align-items:center;
+    justify-content:center;
+}
+.resident-detail-box{
+    background:#fff;
+    width:500px;
+    padding:30px;
+    border-radius:14px;
+}
+.resident-detail-box img{
+    width:160px;
+    height:160px;
+    border-radius:50%;
+    margin-bottom:20px;
+}
+.resident-close{
+    margin-top:20px;
+    padding:8px 16px;
+    cursor:pointer;
+}
+</style>
+</head>
+<body>
+    <!--首页区域-->
+    <div class="home-container" id="home">
+        <img class="wisteria-deco" src="zitengsucai.png" alt="紫藤装饰">
+        <div class="top-banner">
+            <div class="title">
+                <span class="en">Paradise</span>
+                <span class="cn"> 帕罗戴斯</span>
+            </div>
+        </div>
+        <div class="home-card-wrap">
+            <div class="home-card" id="goStaff">
+                <h2>政神名单</h2>
+                <p>查看帕罗戴斯公职名录</p>
+            </div>
+            <div class="home-card" id="goGod">
+                <h2>天神名单</h2>
+                <p>查看非政要天神信息</p>
+            </div>
+            <div class="home-card" id="goResident">
+                <h2>所有居民</h2>
+                <p>需管理员密钥访问</p>
+            </div>
+            <div class="home-card" id="goNews">
+                <h2>每日资讯</h2>
+                <p>浏览帕罗戴斯最新消息</p>
+            </div>
+        </div>
+    </div>
+
+    <!--政神名单页面-->
+    <div class="staff-page" id="staffPage">
+        <button class="back-btn" id="backHome">返回首页</button>
+        <h2 class="page-title">政神名单</h2>
+        <div class="split-layout">
+            <div class="left-panel" id="staffLeftBox"></div>
+            <div class="right-panel" id="staffDetailBox">
+                <div class="tip-text">请点击左侧人员名片查看详细资料</div>
+            </div>
+        </div>
+    </div>
+    
+    <!--天神名单页面 -->
+    <div class="god-page" id="godPage">
+        <button class="back-btn" id="backHome2">返回首页</button>
+        <h2 class="page-title">天神名单</h2>
+        <div class="split-layout">
+            <div class="left-panel" id="godLeftBox"></div>
+            <div class="right-panel" id="godDetailBox">
+                <div class="tip-text">请左侧选择天神查看详情</div>
+            </div>
+        </div>
+    </div>
+
+    <!--居民页面-->
+    <div id="residentPage">
+        <button class="back-btn" id="backHome3">返回首页</button>
+        <h2 class="page-title">全部居民档案</h2>
+        <div id="residentGrid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:10px;">
+        </div>
+    </div>
+
+    <!--管理员密码弹窗（修复：默认隐藏，无样式冲突）-->
+    <div id="pwdModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:999;align-items:center;justify-content:center;">
+        <div style="background:#fff;padding:30px;border-radius:12px;width:360px;text-align:center;">
+            <h3 style="margin-bottom:16px">管理员密钥验证</h3>
+            <input id="pwdInput" type="password" placeholder="请输入密钥" style="width:100%;padding:10px;margin-bottom:16px;border:1px solid #ddd;border-radius:6px;">
+            <div style="display:flex;gap:12px;justify-content:center;">
+                <button id="cancelPwd" class="back-btn">取消</button>
+                <button id="confirmPwd" style="background:#707fc9;color:white;border:none;padding:8px 20px;border-radius:6px;cursor:pointer;">确认</button>
+            </div>
+            <p id="pwdTip" style="color:red;margin-top:10px;display:none;">密钥错误，请重新输入</p>
+        </div>
+    </div>
+
+    <!--居民详情弹窗（静态默认隐藏）-->
+    <div id="residentModal" class="resident-detail-modal" style="display:none;">
+        <div class="resident-detail-box">
+            <img id="residentDetailImg" src="">
+            <h2 id="residentDetailName"></h2>
+            <p id="residentDetailDesc" style="margin-top:16px;line-height:1.8;"></p>
+            <button class="resident-close" onclick="document.getElementById('residentModal').style.display='none'">关闭</button>
+        </div>
+    </div>
+
+<script>
+// 数据区
+const staffData = [
+     {
+         id:1,
+         name:"寺北",
+         post:"政务长",
+         avatar:"Sibei.jpg",
+         desc:"帕罗戴斯最高政务负责人。统筹城邦全部行政事务，主持议会，处理重大城邦决议。"
+     },
+     {
+         id:2,
+         name:"畏葸",
+         post:"天神管理处处长",
+         avatar:"Weixi.jpg",
+         desc:"天神管理处处长，统辖天神事务，监察众天神工作。"
+     },
+     {
+         id:3,
+         name:"夜修斯",
+         post:"制律者",
+         avatar:"",
+         desc:"领导治律专组，共同制定帕罗戴斯法律。"
+     }
+ ]
+
+ const godData= [
+    {
+        id:"g1",
+        name:"溯洄",
+        post:"澜江江神",
+        avatar:"",
+        desc:"澜江江神，收集群众信愿力用以加强自身法力，护佑澜江平安。"
+    },
+    {
+        id:"g2",
+        name:"溯游",
+        post:"希江江神",
+        avatar:"",
+        desc:"希江江神，收集群众信愿力用以加强自身法力，护佑希江平安。"
+    }
+ ]
+
+const residentData = [
+    {
+        id:"r1",
+        name:"居民甲",
+        avatar:"",
+        desc:"普通城邦居民，居住澜江沿岸。"
+    },
+    {
+        id:"r2",
+        name:"居民乙",
+        avatar:"",
+        desc:"希江片区商户。"
+    },
+    {
+        id:"r3",
+        name:"居民丙",
+        avatar:"",
+        desc:"手工业从业者。"
+    },
+    {
+        id:"r4",
+        name:"居民丁",
+        avatar:"",
+        desc:"城邦巡守平民。"
+    }
+]
+const ADMIN_KEY = "123456";
+
+// 页面公共控制
+function hideAllPage(){
+    document.getElementById('home').style.display = 'none';
+    document.getElementById('staffPage').style.display = 'none';
+    document.getElementById('godPage').style.display = 'none';
+    document.getElementById('residentPage').style.display = 'none';
+}
+function backToHome(){
+    hideAllPage();
+    document.getElementById('home').style.display = 'flex';
+}
+
+// 政神渲染
+function renderStaffList(){
+    const leftBox = document.getElementById("staffLeftBox");
+    leftBox.innerHTML = "";
+    staffData.forEach(item=>{
+        let card = document.createElement("div");
+        card.className = "mini-card";
+        card.dataset.id = item.id;
+        card.innerHTML = `
+            <img src="${item.avatar}" alt="${item.name}">
+            <div class="mini-info">
+                <div class="name">${item.name}</div>
+                <div class="post">${item.post}</div>
+            </div>
+        `
+        card.onclick = function(){
+            document.querySelectorAll("#staffLeftBox .mini-card").forEach(c=>c.classList.remove("active"));
+            card.classList.add("active");
+            const info = staffData.find(d=>d.id === Number(this.dataset.id));
+            document.getElementById("staffDetailBox").innerHTML = `
+                <img class="detail-avatar" src="${info.avatar}" alt="${info.name}">
+                <h2>${info.name}</h2>
+                <p style="color:#666;margin:8px 0 20px 0;">职位：${info.post}</p>
+                <p>${info.desc}</p>
+            `
+        }
+        leftBox.appendChild(card);
+    })
+}
+
+// 天神渲染
+function renderGodList(){
+    const leftBox = document.getElementById("godLeftBox");
+    leftBox.innerHTML = "";
+    godData.forEach(item=>{
+        let card = document.createElement("div");
+        card.className = "mini-card";
+        card.dataset.id = item.id;
+        card.innerHTML = `
+            <img src="${item.avatar}" alt="${item.name}">
+            <div class="mini-info">
+                <div class="name">${item.name}</div>
+                <div class="post">${item.post}</div>
+            </div>
+        `
+        card.onclick = function(){
+            document.querySelectorAll("#godLeftBox .mini-card").forEach(c=>c.classList.remove("active"));
+            card.classList.add("active");
+            const info = godData.find(d=>d.id === this.dataset.id);
+            document.getElementById("godDetailBox").innerHTML = `
+                <img class="detail-avatar" src="${info.avatar}" alt="${info.name}">
+                <h2>${info.name}</h2>
+                <p style="color:#666;margin:8px 0 20px 0;">职位：${info.post}</p>
+                <p>${info.desc}</p>
+            `
+        }
+        leftBox.appendChild(card);
+    })
+}
+
+// 居民双列渲染
+function renderResidentList(){
+    const gridBox = document.getElementById("residentGrid");
+    gridBox.innerHTML = "";
+    residentData.forEach(item=>{
+        let card = document.createElement("div");
+        card.className = "resident-card";
+        card.dataset.rid = item.id;
+        card.innerHTML = `
+            <img src="${item.avatar}" alt="${item.name}">
+            <div class="resident-name-line">${item.name}</div>
+        `
+        card.onclick = function(){
+            const info = residentData.find(d=>d.id === this.dataset.rid);
+            document.getElementById("residentDetailImg").src = info.avatar;
+            document.getElementById("residentDetailName").innerText = info.name;
+            document.getElementById("residentDetailDesc").innerText = info.desc;
+            document.getElementById("residentModal").style.display = "none";
+            setTimeout(()=>{
+                document.getElementById("residentModal").style.display = "flex";
+            },10)
+        }
+        gridBox.appendChild(card);
+    })
+}
+
+// 密码弹窗打开
+function openResidentPageCheckPwd(){
+    document.getElementById("pwdModal").style.display = "flex";
+    document.getElementById("pwdInput").value = "";
+    document.getElementById("pwdTip").style.display = "none";
+}
+// 密码确认
+document.getElementById("confirmPwd").onclick = function(){
+    const inputVal = document.getElementById("pwdInput").value;
+    if(inputVal === ADMIN_KEY){
+        document.getElementById("pwdModal").style.display = "none";
+        hideAllPage();
+        document.getElementById("residentPage").style.display = "block";
+        renderResidentList();
+    }else{
+        document.getElementById("pwdTip").style.display = "block";
+    }
+}
+document.getElementById("cancelPwd").onclick = function(){
+    document.getElementById("pwdModal").style.display = "none";
+}
+
+// 首页卡片点击绑定
+document.getElementById("goStaff").onclick = function(){
+    hideAllPage();
+    document.getElementById("staffPage").style.display = "block";
+    renderStaffList();
+}
+document.getElementById("goGod").onclick = function(){
+    hideAllPage();
+    document.getElementById("godPage").style.display = "block";
+    renderGodList();
+}
+document.getElementById("goResident").onclick = openResidentPageCheckPwd;
+document.getElementById("goNews").onclick = function(){
+    alert("每日资讯页面待开发");
+}
+
+// 返回按钮
+document.getElementById("backHome").onclick = backToHome;
+document.getElementById("backHome2").onclick = backToHome;
+document.getElementById("backHome3").onclick = backToHome;
+</script>
+</body>
+</html>
